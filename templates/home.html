@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load forum_extras %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-2">	
+				<h4>Feeds</h4>
+				<hr>
+				<ul>
+					{% if tags %}
+					<li>Top Stories</li>
+					{% for tag in tags %}
+					<li><a href="pinned/{{ tag.id }}">{{ tag.tag_text }}</a></li>
+					{% endfor %}
+					{% else %}
+					<li>There is no tag in your feed</li>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-8">
+				<h4>Top stories for you</h4>
+				<hr>
+				{% for question in questions %}
+					<span>Questioned asked:
+					{% for tag in question.tag.all %}
+						<a href="/pinned/{{ tag.id }}">{{ tag.tag_text }}</a>
+					{% endfor %}
+					<span>
+					<span class="pull-right">{{ question.pub_date }}</span>
+					<h3><a href="questions/{{ question.id }}">{{ question.question_text }}</a></h3>
+					<p>{{ answers|access:question.id }} answers | {{ question.views }} views</p>
+					<div>
+						<button class="btn btn-xs btn-primary create-answer" id="{{ question.id }}" data-toggle="modal" data-target="#answer-question-modal"><span><i class="fa fa-pencil"></i></span> Answer</button>
+					</div>
+					<div id="question-answer-form">
+					</div>
+					<hr>
+					{% endfor %}
+				</div>
+				<div class="col-md-2">
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+

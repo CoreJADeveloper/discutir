@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load forum_extras %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-8">
+			<h3>{{ question_record.question_text|safe }}</h3>
+			<span>In: 
+			{% for tag in question_record.tag.all %}
+				<a href="pinned/{{ tag.id }}">{{ tag.tag_text }}</a> 
+			{% endfor %}
+			- {{ answer_records|length }} answers</span>
+			<div style="margin-top: 25px">
+			<button id="{{ question_record.id }}" class="btn btn-primary" data-toggle="modal" data-target="#answer-question-modal">Answer the question</button>
+			</div>
+			<hr>
+			{% if answer_records %}
+			{% for answer in answer_records %}
+			<div class="row">
+			<div class="col-md-1">
+			<img src="{% static 'img/profile.png' %}" width="60" height="60" alt="">
+			</div>
+			<div class="col-md-8">
+			<h5>{{ answer.user.username }}</h5>
+			</div>
+			</div>
+			<br>
+			<div class="row">
+			<div class="col-md-12">
+				{{ answer.answer_text|safe }}
+			</div>
+			</div>
+			<hr>
+			{% endfor %}
+			{% endif %}
+		</div>
+		<div class="col-md-4">
+			<h5>Related questions</h5>
+			<hr>
+			{% for related_question in related_questions %}
+			<p><a href="/questions/{{ related_question.id }}">{{ related_question.question_text }}</a></p>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question forum</title>
+    <!-- Core CSS - Include with every page -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/chosen.min.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+
+    <script src = "{% static 'js/ckeditor.js' %}"></script>
+    <script src = "{% static 'js/ckeditor-integration.js' %}"></script>
+</head>
+<body>
+    <div id="loading-ajax" class="spinner hide" >
+        <img id="img-spinner" src="{% static 'img/spin.gif' %}" alt="Loading"/>
+    </div>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+                data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">QA Forum</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li>
+                    <a>
+                        <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#ask-question-modal">Ask question</button>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="/profile">Profile</a>
+                        </li>
+                        <li>
+                            <a href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}    
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">Sign up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="ask-question-modal" class="modal fade" tabindex="-1" role="dialog">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+    </div>
+    <form id="ask-question-form" method="post">
+    {% csrf_token %}
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary" value="Save changes" />
+    </div>
+    </form>
+</div>
+</div>
+</div>
+
+<div id="answer-question-modal" class="modal fade" tabindex="-1" role="dialog">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Answer the question</h4>
+    </div>
+    <form id="answer-question-form" method="post">
+    {% csrf_token %}
+    <div class="modal-body">
+    <div class="form-group">
+            <textarea name="answer" id="answer_textarea"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="question-id" value="" class="hidden-question-id">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary" value="Save changes" />
+    </div>
+    </form>
+</div>
+</div>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<!-- Core Scripts - Include with every page -->
+<script src = "{% static 'js/jquery.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+<script src = "{% static 'js/chart.min.js' %}"></script>
+<script src = "{% static 'js/chosen.jquery.min.js' %}"></script>
+<script src = "//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script src = "{% static 'js/script.js' %}"></script>
+{% block javascript %}
+{% endblock %}
+
+
+</body>                
+</html>
